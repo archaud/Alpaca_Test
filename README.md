@@ -64,8 +64,16 @@ would all roughly double in target weight.
 
 ```
 pip install -r requirements.txt
-cp .env.example .env       # add your sandbox API_KEY and API_SECRET
 python main.py
+```
+
+Create a `.env` file in the project root with your sandbox credentials:
+
+```
+ALPACA_API_KEY=...
+ALPACA_API_SECRET=...
+ALPACA_BASE_URL=https://broker-api.sandbox.alpaca.markets
+ALPACA_FIRM_ACCOUNT_ID=...   # the pre-funded firm account, from the dashboard
 ```
 
 Get a sandbox key at `broker-app.alpaca.markets`. The sandbox includes
@@ -76,7 +84,7 @@ a $50,000 pre-funded firm account that we journal from.
 ```
 polymarket.py   live odds from gamma-api.polymarket.com
 baskets.py      thesis-to-symbol mapping, weight math, cash floor
-alpaca.py       Broker API client (accounts, journals, rebalancing)
+broker.py       Alpaca Broker API client (accounts, journals, rebalancing)
 main.py         orchestrator
 ```
 

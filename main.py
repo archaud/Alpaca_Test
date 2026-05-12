@@ -6,8 +6,8 @@ Run this once. It will:
   3. Create a sandbox customer account on Alpaca.
   4. Journal cash from the sandbox firm account into the customer account.
   5. Create a portfolio with the computed weights.
-  6. Subscribe the customer account, which triggers an initial rebalance.
-  7. Poll runs until completion, print the resulting orders.
+  6. Subscribe the customer account (triggers the initial rebalance), then
+     poll runs to completion and print the resulting orders.
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ from dotenv import load_dotenv
 
 import baskets
 import polymarket
-from alpaca import AlpacaError, BrokerClient
+from broker import AlpacaError, BrokerClient, ConfigError
 
 # ---- Demo configuration ----------------------------------------------------
 
@@ -49,7 +49,11 @@ def main() -> int:
 
     # --- 3. Alpaca: create customer account --------------------------------
     print("\n[3/6] Creating sandbox customer account...")
-    client = BrokerClient()
+    try:
+        client = BrokerClient()
+    except ConfigError as e:
+        print(f"\nConfiguration error: {e}")
+        return 1
     account = client.create_customer_account()
     customer_id = account["id"]
     print(f"      account_id: {customer_id}")

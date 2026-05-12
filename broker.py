@@ -28,6 +28,21 @@ class AlpacaError(Exception):
     """Raised when the API returns a non-2xx response."""
 
 
+class ConfigError(Exception):
+    """Raised when required configuration (env vars) is missing."""
+
+
+def _required_env(name: str) -> str:
+    value = os.environ.get(name)
+    if not value:
+        raise ConfigError(
+            f"{name} is not set. Add it to a .env file in the project root. "
+            f"ALPACA_API_KEY and ALPACA_API_SECRET are required; get sandbox "
+            f"credentials at https://broker-app.alpaca.markets."
+        )
+    return value
+
+
 class BrokerClient:
     """Thin Broker API wrapper. One client per sandbox tenant."""
 
@@ -37,8 +52,8 @@ class BrokerClient:
         api_secret: Optional[str] = None,
         base_url: Optional[str] = None,
     ) -> None:
-        self.api_key = api_key or os.environ["ALPACA_API_KEY"]
-        self.api_secret = api_secret or os.environ["ALPACA_API_SECRET"]
+        self.api_key = api_key or _required_env("ALPACA_API_KEY")
+        self.api_secret = api_secret or _required_env("ALPACA_API_SECRET")
         self.base_url = (
             base_url
             or os.environ.get("ALPACA_BASE_URL")
