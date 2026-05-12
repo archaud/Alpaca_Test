@@ -1,4 +1,4 @@
-"""Conviction: probability-weighted rebalancing on Alpaca Broker API.
+"""alpaca_test: probability-weighted rebalancing on Alpaca Broker API.
 
 Run this once. It will:
   1. Fetch live odds from a Polymarket binary market.
@@ -77,7 +77,7 @@ def main() -> int:
 
     # --- 5. Create portfolio -----------------------------------------------
     print("\n[5/6] Creating portfolio in Alpaca...")
-    portfolio_name = f"Conviction: {market.slug[:30]}"
+    portfolio_name = f"alpaca_test: {market.slug[:30]}"
     portfolio = client.create_portfolio(
         name=portfolio_name,
         description=(

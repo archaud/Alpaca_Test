@@ -1,4 +1,4 @@
-# Conviction
+# alpaca_test
 
 A prototype that drives an Alpaca brokerage portfolio off live Polymarket
 prediction-market odds. Built in a few hours to ground a product

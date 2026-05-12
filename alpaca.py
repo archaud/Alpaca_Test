@@ -70,7 +70,7 @@ class BrokerClient:
         suffix = uuid.uuid4().hex[:8]
         payload = {
             "contact": {
-                "email_address": f"conviction.demo.{suffix}@example.com",
+                "email_address": f"alpaca_test.demo.{suffix}@example.com",
                 "phone_number": "555-555-1234",
                 "street_address": ["20 N San Mateo Dr"],
                 "city": "San Mateo",
@@ -130,7 +130,7 @@ class BrokerClient:
         for a in accounts:
             status = a.get("status")
             email = (a.get("contact") or {}).get("email_address", "")
-            if status == "ACTIVE" and not email.startswith("conviction.demo"):
+            if status == "ACTIVE" and not email.startswith("alpaca_test.demo"):
                 return a["id"]
 
         # Couldn't find it. Dump what we saw to help debug.
