@@ -4,6 +4,11 @@ A prototype that drives an Alpaca brokerage portfolio off live Polymarket
 prediction-market odds. Built in a few hours to ground a product
 conversation about signal-driven rebalancing.
 
+The script does not currently run end-to-end: `POST /v1/rebalancing/portfolios`
+returns `403 insufficient_permission` even after the API key is assigned
+Rebalancing scope explicitly. See [ADDITIONAL_FINDINGS.md](ADDITIONAL_FINDINGS.md)
+for the full reproduction and diagnostic trail.
+
 ## Thesis
 
 Prediction markets produce probability estimates that move faster, with
@@ -92,46 +97,3 @@ broker.py       Alpaca Broker API client (accounts, journals, rebalancing)
 main.py         orchestrator
 ```
 
-## Product observations from building this
-
-Each of these is a real conversation about where the Rebalancing API
-could grow.
-
-1. **Cooldown is human-paced.** `cooldown_days` minimum is 1. Signal-
-   driven rebalancing wants sub-daily cadence. A "tactical mode" with
-   shorter cooldown, distinct from the strategic/calendar model, is a
-   real product opportunity.
-
-2. **Drift bands are symbol-level.** For a thesis-driven portfolio,
-   meaningful drift is at the basket or theme level, not the leg. A
-   higher-level abstraction would map cleanly to how this kind of
-   product wants to think.
-
-3. **No webhook-in primitive.** The signal source has to be polled by
-   the customer, who then PATCHes the portfolio and triggers a run.
-   Webhook-driven rebalancing as a first-class feature would unlock a
-   lot of signal-driven products.
-
-4. **Minimum $1 per asset.** For probability-weighted allocations
-   where some legs go below the threshold, the current behavior is
-   partial rebalance. A "round down to zero below threshold"
-   instruction would be useful, as would a "round up to the
-   threshold" inverse.
-
-5. **Manual runs blocked on subscribed accounts.** Reasonable for
-   safety, but creates an awkward unsubscribe/run/resubscribe dance
-   for any product that wants to combine automated and event-driven
-   rebalancing.
-
-6. **Composability question.** Could the Rebalancing API support a
-   "compute target weights from this callback URL" mode where the
-   customer hosts the signal logic and Alpaca polls it?
-
-## Out of scope
-
-- Multi-outcome (non-binary) markets
-- Real-time websocket signal updates
-- Multi-account / advisor fan-out
-- Production KYC flow (we use sandbox placeholder data)
-- Error handling beyond the happy path
-- Real money
