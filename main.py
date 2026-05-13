@@ -75,8 +75,8 @@ def main() -> int:
     except AlpacaError as e:
         print(f"      JOURNAL FAILED (continuing anyway):\n        {e}")
         print(
-            "      NOTE: this is a known sandbox issue (500 with no detail).\n"
-            "      Portfolio creation + subscription will still be exercised."
+            "      NOTE: sandbox funding can be flaky; continuing so the rest\n"
+            "      of the API surface (portfolio + subscription) still runs."
         )
 
     # --- 5. Create portfolio -----------------------------------------------

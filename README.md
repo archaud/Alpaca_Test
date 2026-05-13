@@ -22,15 +22,17 @@ For a single binary prediction market (e.g. "Will Bitcoin reach $85,000
 in May?"):
 
 1. Pulls live YES/NO odds from Polymarket's public Gamma API.
-2. Maps each outcome to a pre-defined equity basket.
-3. Blends the baskets by their probabilities, with a cash floor.
-4. Creates a sandbox customer account on Alpaca's Broker API.
-5. Funds it from the sandbox firm account via JNLC.
-6. Pushes the portfolio to Alpaca's Rebalancing API.
-7. Subscribes the account, which triggers the initial rebalance.
-8. Polls and prints the resulting orders.
+2. Maps each outcome to a pre-defined equity basket and blends them by
+   their probabilities, with a cash floor.
+3. Creates a sandbox customer account on Alpaca's Broker API.
+4. Funds it from the sandbox firm account via JNLC.
+5. Pushes the probability-weighted portfolio to Alpaca's Rebalancing API.
+6. Subscribes the account (triggers the initial rebalance), then polls
+   and prints the resulting orders.
 
-Single Python script. About 400 lines across four modules. No UI: the
+These map 1:1 to the `[1/6]`–`[6/6]` steps the script prints.
+
+Single Python script, roughly 600 lines across four modules. No UI: the
 Alpaca Broker Dashboard is the visual layer.
 
 ## Example output
@@ -62,6 +64,8 @@ would all roughly double in target weight.
 
 ## Setup
 
+Requires Python 3.8+.
+
 ```
 pip install -r requirements.txt
 python main.py
@@ -76,8 +80,8 @@ ALPACA_BASE_URL=https://broker-api.sandbox.alpaca.markets
 ALPACA_FIRM_ACCOUNT_ID=...   # the pre-funded firm account, from the dashboard
 ```
 
-Get a sandbox key at `broker-app.alpaca.markets`. The sandbox includes
-a $50,000 pre-funded firm account that we journal from.
+Get a sandbox key at `https://broker-app.alpaca.markets`. The sandbox
+includes a $50,000 pre-funded firm account that we journal from.
 
 ## Architecture
 
