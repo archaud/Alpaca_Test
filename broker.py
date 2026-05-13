@@ -5,9 +5,9 @@ Wraps the endpoints needed for the end-to-end demo:
   1. Create a customer account            POST /v1/accounts
   2. Find the firm account                GET  /v1/accounts            (filtered)
   3. Journal cash from firm -> customer   POST /v1/journals
-  4. Create a portfolio                   POST /v1/beta/rebalancing/portfolios
-  5. Subscribe account to portfolio       POST /v1/beta/rebalancing/subscriptions
-  6. List runs for an account             GET  /v1/beta/rebalancing/runs
+  4. Create a portfolio                   POST /v1/rebalancing/portfolios
+  5. Subscribe account to portfolio       POST /v1/rebalancing/subscriptions
+  6. List runs for an account             GET  /v1/rebalancing/runs
   7. Get the account snapshot             GET  /v1/trading/accounts/{id}/account
 
 Auth is HTTP Basic with API_KEY:API_SECRET.
@@ -245,17 +245,17 @@ class BrokerClient:
                 }
             ],
         }
-        return self._request("POST", "/v1/beta/rebalancing/portfolios", json=payload)
+        return self._request("POST", "/v1/rebalancing/portfolios", json=payload)
 
     def subscribe(self, account_id: str, portfolio_id: str) -> Dict[str, Any]:
         """Subscribe account to portfolio. This triggers the initial full rebalance."""
         payload = {"account_id": account_id, "portfolio_id": portfolio_id}
-        return self._request("POST", "/v1/beta/rebalancing/subscriptions", json=payload)
+        return self._request("POST", "/v1/rebalancing/subscriptions", json=payload)
 
     def list_runs(self, account_id: str) -> List[Dict[str, Any]]:
         data = self._request(
             "GET",
-            "/v1/beta/rebalancing/runs",
+            "/v1/rebalancing/runs",
             params={"account_id": account_id},
         )
         if isinstance(data, dict):
